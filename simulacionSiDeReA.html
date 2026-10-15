@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>SiDeReA - Simulador de Agua Domiciliaria</title>
 <style>
   :root {
@@ -22,7 +22,7 @@
     background: var(--bg);
     color: var(--ink);
     line-height: 1.4;
-    padding: 16px;
+    padding: 12px;
   }
   header {
     max-width: 1240px;
@@ -30,58 +30,70 @@
     background: var(--card);
     border: 1px solid var(--line);
     border-radius: 16px;
-    padding: 16px 24px;
+    padding: 16px 20px;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 12px;
     align-items: center;
-    justify-content: space-between;
+    text-align: center;
   }
-  header h1 { font-size: 1.4rem; }
+  @media (min-width: 768px) {
+    header {
+      flex-direction: row;
+      justify-content: space-between;
+      text-align: left;
+    }
+  }
+  header h1 { font-size: 1.3rem; }
   header small { color: var(--muted); display: block; font-size: 0.85rem; }
   
-  .modes { display: flex; background: #0b1329; border-radius: 999px; padding: 4px; border: 1px solid var(--line); }
+  .modes { display: flex; background: #0b1329; border-radius: 999px; padding: 4px; border: 1px solid var(--line); width: 100%; max-width: 360px; }
   .modes button {
-    border: 0; background: transparent; color: var(--muted); padding: 8px 18px;
-    border-radius: 999px; cursor: pointer; font-weight: 700; font-size: 0.95rem; transition: all 0.2s;
+    flex: 1;
+    border: 0; background: transparent; color: var(--muted); padding: 8px 12px;
+    border-radius: 999px; cursor: pointer; font-weight: 700; font-size: 0.85rem; transition: all 0.2s;
   }
   .modes button.active.trad { background: var(--sewer); color: #fff; box-shadow: 0 0 10px rgba(249, 115, 22, 0.5); }
   .modes button.active.rec { background: var(--greywater); color: #fff; box-shadow: 0 0 10px rgba(168, 85, 247, 0.5); }
 
-  main { max-width: 1240px; margin: 0 auto; display: grid; gap: 18px; }
-  .grid { display: grid; grid-template-columns: minmax(0, 2fr) minmax(300px, 1fr); gap: 18px; }
-  .card { background: var(--card); border-radius: 16px; padding: 18px; border: 1px solid var(--line); }
-  .card h2 { font-size: 1.05rem; margin-bottom: 12px; color: var(--ink); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; }
+  main { max-width: 1240px; margin: 0 auto; display: flex; flex-direction: column; gap: 16px; }
+  .grid { display: flex; flex-direction: column; gap: 16px; }
+  @media (min-width: 900px) {
+    .grid { display: grid; grid-template-columns: minmax(0, 2fr) minmax(300px, 1fr); }
+  }
+
+  .card { background: var(--card); border-radius: 16px; padding: 16px; border: 1px solid var(--line); }
+  .card h2 { font-size: 1rem; margin-bottom: 12px; color: var(--ink); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
 
   #simBanner {
     background: linear-gradient(135deg, #312e81 0%, #1e1b4b 100%);
     border: 2px solid #6366f1;
     color: #ffffff;
-    padding: 14px 18px;
+    padding: 12px;
     border-radius: 12px;
     margin-bottom: 14px;
     box-shadow: 0 4px 20px rgba(99, 102, 241, 0.3);
   }
-  .sim-info { display: flex; justify-content: space-between; align-items: center; font-size: 1.15rem; font-weight: 700; margin-bottom: 8px; }
-  .sim-bar-bg { width: 100%; height: 16px; background: rgba(0,0,0,0.4); border-radius: 99px; overflow: hidden; border: 1px solid #4338ca; }
+  .sim-info { display: flex; justify-content: space-between; align-items: center; font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; flex-wrap: wrap; gap: 4px; }
+  .sim-bar-bg { width: 100%; height: 14px; background: rgba(0,0,0,0.4); border-radius: 99px; overflow: hidden; border: 1px solid #4338ca; }
   .sim-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #38bdf8, #a855f7); transition: width 0.3s ease; }
 
   .sim-step-controls {
-    display: flex; gap: 8px; margin-top: 10px; justify-content: center;
+    display: flex; gap: 6px; margin-top: 10px; justify-content: center; flex-wrap: wrap;
   }
   .btn-step {
-    background: #4338ca; border: 1px solid #6366f1; color: white; padding: 6px 14px; border-radius: 8px;
-    font-weight: 700; cursor: pointer; font-size: 0.85rem; transition: background 0.2s;
+    background: #4338ca; border: 1px solid #6366f1; color: white; padding: 6px 12px; border-radius: 8px;
+    font-weight: 700; cursor: pointer; font-size: 0.8rem; transition: background 0.2s; flex: 1; min-width: 80px; text-align: center;
   }
   .btn-step:hover { background: #4f46e5; }
 
-  .legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 0.85rem; color: var(--muted); margin-top: 12px; }
-  .legend span::before { content: ""; display: inline-block; width: 16px; height: 6px; border-radius: 3px; margin-right: 6px; vertical-align: middle; }
+  .legend { display: flex; flex-wrap: wrap; gap: 10px; font-size: 0.78rem; color: var(--muted); margin-top: 12px; }
+  .legend span::before { content: ""; display: inline-block; width: 12px; height: 6px; border-radius: 3px; margin-right: 4px; vertical-align: middle; }
   .lg-pot::before { background: var(--potable); }
   .lg-grey::before { background: var(--greywater); }
   .lg-bad::before { background: var(--sewer); }
 
-  svg#house { width: 100%; height: auto; display: block; background: #070d1e; border-radius: 12px; border: 1px solid var(--line); }
+  svg#house { width: 100%; height: auto; max-height: 70vh; display: block; background: #070d1e; border-radius: 12px; border: 1px solid var(--line); }
   
   .fx { cursor: pointer; }
   .fx circle { fill: #0f172a; stroke: var(--potable); stroke-width: 2.5; transition: all 0.2s; }
@@ -100,42 +112,44 @@
   .hidden { display: none !important; }
   .tank-level { transition: y 0.5s ease, height 0.5s ease; }
 
-  .metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
-  .metric { background: #0b1329; border-radius: 12px; padding: 12px; border: 1px solid var(--line); }
-  .metric .lbl { font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.03em; }
-  .metric .val { font-size: 1.4rem; font-weight: 700; margin-top: 2px; }
+  .metrics { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+  .metric { background: #0b1329; border-radius: 12px; padding: 10px; border: 1px solid var(--line); }
+  .metric .lbl { font-size: 0.68rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.03em; }
+  .metric .val { font-size: 1.15rem; font-weight: 700; margin-top: 2px; }
   .metric.pot .val { color: var(--potable); }
   .metric.grey .val { color: var(--greywater); }
   .metric.bad .val { color: var(--sewer); }
   .metric.ok .val { color: var(--ok); }
   .metric.waste .val { color: #ef4444; }
 
-  .acts { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; }
+  .acts { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 8px; }
   .act {
-    border: 1px solid var(--line); border-radius: 12px; background: #0b1329; padding: 12px;
+    border: 1px solid var(--line); border-radius: 12px; background: #0b1329; padding: 10px;
     cursor: pointer; text-align: left; font: inherit; color: inherit; position: relative; transition: all 0.15s;
   }
   .act:hover { transform: translateY(-2px); border-color: var(--potable); background: #1e293b; }
-  .act .ico { font-size: 1.8rem; }
-  .act .name { font-weight: 600; font-size: 0.9rem; margin-top: 4px; }
-  .act .liters { font-size: 0.8rem; color: var(--muted); }
-  .act .count { position: absolute; top: 8px; right: 8px; background: #1e293b; color: var(--potable); border-radius: 99px; padding: 2px 8px; font-size: 0.75rem; font-weight: 700; border: 1px solid var(--line); }
+  .act .ico { font-size: 1.5rem; }
+  .act .name { font-weight: 600; font-size: 0.82rem; margin-top: 4px; }
+  .act .liters { font-size: 0.75rem; color: var(--muted); }
+  .act .count { position: absolute; top: 6px; right: 6px; background: #1e293b; color: var(--potable); border-radius: 99px; padding: 1px 6px; font-size: 0.7rem; font-weight: 700; border: 1px solid var(--line); }
 
-  .controls { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 14px; }
-  .sim-btn-group { display: flex; gap: 6px; }
-  .btn { border: 0; border-radius: 10px; padding: 10px 16px; cursor: pointer; font-weight: 600; background: var(--line); color: var(--ink); transition: background 0.2s; }
+  .controls { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  .sim-btn-group { display: flex; gap: 4px; flex-wrap: wrap; width: 100%; }
+  @media (min-width: 500px) { .sim-btn-group { width: auto; } }
+  
+  .btn { border: 0; border-radius: 10px; padding: 8px 12px; cursor: pointer; font-weight: 600; background: var(--line); color: var(--ink); transition: background 0.2s; font-size: 0.82rem; flex: 1; text-align: center; }
   .btn:hover { background: #475569; }
-  .btn.flush { background: var(--greywater); color: #fff; }
-  .btn.sim { background: #2563eb; color: #fff; box-shadow: 0 0 12px rgba(37, 99, 235, 0.5); font-size: 0.9rem; }
+  .btn.flush { background: var(--greywater); color: #fff; flex: 2; }
+  .btn.sim { background: #2563eb; color: #fff; box-shadow: 0 0 10px rgba(37, 99, 235, 0.4); }
   .btn.sim:disabled { opacity: 0.5; cursor: not-allowed; }
 
-  .note { font-size: 0.8rem; color: var(--muted); margin-top: 10px; }
+  .note { font-size: 0.75rem; color: var(--muted); margin-top: 10px; }
 
   footer {
     text-align: center;
-    margin-top: 24px;
-    padding: 12px;
-    font-size: 0.75rem;
+    margin-top: 16px;
+    padding: 12px 4px;
+    font-size: 0.72rem;
     color: #64748b;
   }
 </style>
@@ -160,7 +174,7 @@
         <span>Corte de la Vivienda · Tocá los artefactos</span>
         <div class="sim-btn-group">
           <button class="btn sim" id="btnSim1" onclick="runSimulation(1)">🌅 1 Día</button>
-          <button class="btn sim" id="btnSim7" onclick="runSimulation(7)">📅 1 Semana</button>
+          <button class="btn sim" id="btnSim7" onclick="runSimulation(7)">📅 1 Sem.</button>
           <button class="btn sim" id="btnSim30" onclick="runSimulation(30)">🗓️ 1 Mes</button>
         </div>
       </h2>
@@ -174,9 +188,9 @@
           <div id="simBarFill" class="sim-bar-fill"></div>
         </div>
         <div id="stepCtrlGroup" class="sim-step-controls hidden">
-          <button class="btn-step" onclick="stepPrev()">⏮️ Anterior</button>
-          <button class="btn-step" id="btnPause" onclick="togglePause()">⏸️ Pausar</button>
-          <button class="btn-step" onclick="stepNext()">⏭️ Siguiente</button>
+          <button class="btn-step" onclick="stepPrev()">⏮️ Ant.</button>
+          <button class="btn-step" id="btnPause" onclick="togglePause()">⏸️ Pausa</button>
+          <button class="btn-step" onclick="stepNext()">⏭️ Sig.</button>
         </div>
       </div>
 
@@ -193,29 +207,23 @@
           </marker>
         </defs>
 
-        <!-- Red Potable Entrada Inferior -->
         <rect x="0" y="450" width="850" height="70" fill="#020617"/>
         <line x1="0" y1="450" x2="850" y2="450" stroke="#334155" stroke-width="2"/>
 
-        <!-- Estructura de la Vivienda -->
         <rect x="30" y="40" width="780" height="410" fill="none" stroke="#334155" stroke-width="4" rx="8"/>
         
-        <!-- Red Distribuidora -->
         <path d="M 35 70 H 790" fill="none" stroke="#38bdf8" stroke-width="3" stroke-dasharray="4 4"/>
         <text x="410" y="62" font-size="11" font-weight="700" fill="#38bdf8" text-anchor="middle">LÍNEA DISTRIBUIDORA DE AGUA POTABLE DE RED</text>
 
-        <!-- Divisiones de Ambientes -->
         <line x1="220" y1="40" x2="220" y2="450" stroke="#334155" stroke-width="2" stroke-dasharray="4 4"/>
         <line x1="420" y1="40" x2="420" y2="450" stroke="#334155" stroke-width="2" stroke-dasharray="4 4"/>
         <line x1="620" y1="40" x2="620" y2="450" stroke="#334155" stroke-width="2" stroke-dasharray="4 4"/>
 
-        <!-- Títulos de Ambientes -->
         <text x="125" y="95" font-size="12" font-weight="700" fill="#94a3b8" text-anchor="middle">PATIO / RIEGO</text>
         <text x="320" y="95" font-size="12" font-weight="700" fill="#94a3b8" text-anchor="middle">COCINA</text>
         <text x="520" y="95" font-size="12" font-weight="700" fill="#94a3b8" text-anchor="middle">BAÑO</text>
         <text x="700" y="95" font-size="12" font-weight="700" fill="#94a3b8" text-anchor="middle">LAVADERO</text>
 
-        <!-- Tanque de Reciclado -->
         <g id="tanqueGroup" class="hidden">
           <rect x="50" y="240" width="130" height="180" fill="#0f172a" stroke="#a855f7" stroke-width="2" rx="8"/>
           <rect id="tankLevel" class="tank-level" x="54" y="418" width="122" height="0" fill="#a855f7" opacity="0.6"/>
@@ -223,21 +231,17 @@
           <text id="tankTxt" x="115" y="325" font-size="18" font-weight="700" text-anchor="middle" fill="#fff">0 L</text>
           <text x="115" y="345" font-size="10" text-anchor="middle" fill="#94a3b8">Capacidad 200 L</text>
           
-          <!-- Filtro Elevado y de Alto Contraste -->
           <rect x="230" y="395" width="60" height="22" rx="4" fill="#0284c7" stroke="#38bdf8" stroke-width="1.5"/>
           <text x="260" y="410" font-size="10" text-anchor="middle" fill="#ffffff" font-weight="800">FILTRO</text>
 
-          <!-- Cañería de Demasía / Reboce (Tanque -> Cloaca) -->
           <path d="M 180 360 H 730 V 435" fill="none" stroke="#f97316" stroke-width="2" stroke-dasharray="3 3" opacity="0.6"/>
           <text x="450" y="352" font-size="9" fill="#f97316" font-weight="700" text-anchor="middle">DESAGÜE DE REBOCE POR DEMASÍA (TANQUE LLENO)</text>
         </g>
 
-        <!-- Capas dinámicas de Cañerías -->
         <g id="layPot"></g>
         <g id="layTrad"></g>
         <g id="layRec" class="hidden"></g>
 
-        <!-- Pozo Cloacal (Sección técnica al frente con z-index lógico) -->
         <g id="pozoCloaca">
           <rect x="730" y="400" width="100" height="110" fill="#0f172a" stroke="#f97316" stroke-width="2" rx="6"/>
           <rect id="sewerLevel" x="732" y="508" width="96" height="0" fill="#ea580c" opacity="0.85"/>
@@ -250,14 +254,14 @@
       </svg>
 
       <div class="legend">
-        <span class="lg-pot">Agua Potable (Entrada)</span>
-        <span class="lg-grey">Agua Gris (Hacia Tanque)</span>
-        <span class="lg-bad">Aguas Cloacales (Hacia Pozo)</span>
+        <span class="lg-pot">Agua Potable</span>
+        <span class="lg-grey">Agua Gris</span>
+        <span class="lg-bad">Aguas Cloacales</span>
       </div>
 
       <div class="controls">
         <button class="btn flush" id="bFlush" onclick="doAct('inodoro')">🚽 Descargar Inodoro (6 L)</button>
-        <button class="btn" onclick="resetAll()">Reiniciar Simulación</button>
+        <button class="btn" onclick="resetAll()">Reiniciar</button>
       </div>
     </div>
 
@@ -306,7 +310,7 @@ const ACT = [
     reuseP:['M115 240 V200 H560 V310']
   },
   { 
-    id:'manos', name:'Lavado de Manos / Dientes', ico:'🪥', L:5, x:500, y:250, grey:true,
+    id:'manos', name:'Lavado Manos/Dientes', ico:'🪥', L:5, x:500, y:250, grey:true,
     pot:['M500 70 V250'],
     dTrad:['M500 265 V435 H730'],
     dRec:['M500 265 V417 H285 H180']
@@ -324,7 +328,7 @@ const ACT = [
     dRec:['M715 305 V417 H285 H180']
   },
   { 
-    id:'patio', name:'Baldeado / Riego / Auto', ico:'🚗', L:25, x:115, y:150, reuse:true,
+    id:'patio', name:'Baldeado/Riego', ico:'🚗', L:25, x:115, y:150, reuse:true,
     pot:['M115 70 V150'],
     dTrad:['M115 165 H35 V435 H730'],
     dRec:['M115 165 H35 V435 H730'],
@@ -472,8 +476,8 @@ let simTimer = null;
 const dailyRoutine = [
   { act: 'inodoro', label: 'Inodoro (Mañana 1/2)' },
   { act: 'inodoro', label: 'Inodoro (Mañana 2/2)' },
-  { act: 'manos',   label: 'Lavado de manos / Cepillado (1/2)' },
-  { act: 'manos',   label: 'Lavado de manos / Cepillado (2/2)' },
+  { act: 'manos',   label: 'Lavado manos / Dientes (1/2)' },
+  { act: 'manos',   label: 'Lavado manos / Dientes (2/2)' },
   { act: 'ducha',   label: 'Ducha corta 1 (65 L)' },
   { act: 'ducha',   label: 'Ducha corta 2 (65 L)' },
   { act: 'patio',   label: 'Baldeado / Riego (25 L)' },
@@ -556,7 +560,7 @@ function runOneStep1Day() {
 
 function togglePause() {
   isPaused = !isPaused;
-  $('btnPause').textContent = isPaused ? '▶️ Reanudar' : '⏸️ Pausar';
+  $('btnPause').textContent = isPaused ? '▶️ Reanudar' : '⏸️ Pausa';
   if (!isPaused) {
     currentStepIdx++;
     runOneStep1Day();
@@ -592,7 +596,6 @@ function stepPrev() {
 
 async function runLongSimulation(days) {
   const totalSteps = currentRoutine.length;
-  // Velocidad pausada para simulaciones semanales y mensuales
   const delay = days === 7 ? 60 : 20;
 
   for (let i = 0; i < totalSteps; i++) {
@@ -614,7 +617,7 @@ async function runLongSimulation(days) {
 }
 
 function finishSimulation(days) {
-  $('simStatus').textContent = `✅ Simulación de ${days} día(s) finalizada con éxito`;
+  $('simStatus').textContent = `✅ Simulación de ${days} día(s) finalizada`;
   setTimeout(() => {
     $('simBanner').classList.add('hidden');$('stepCtrlGroup').classList.add('hidden');
     ['btnSim1', 'btnSim7', 'btnSim30'].forEach(id => $(id).disabled = false);
@@ -648,7 +651,9 @@ function resetAll() {
 
 function render() {
   const f = n => `${Math.round(n).toLocaleString('es-AR')} L`;
-  $('mTotal').textContent = f(state.total);$('mPot').textContent = f(state.potUsed);$('mGrey').textContent = f(state.collected);$('mSewer').textContent = f(state.sewer);$('mSaved').textContent = f(state.saved);$('mWasted').textContent = f(state.wastedOverflow);
+  $('mTotal').textContent = f(state.total);$('mPot').textContent = f(state.potUsed);
+  $('mGrey').textContent = f(state.collected);$('mSewer').textContent = f(state.sewer);
+  $('mSaved').textContent = f(state.saved);$('mWasted').textContent = f(state.wastedOverflow);
 
   const hTank = (state.tank / CAP) * TANK_H;
   const tl = $('tankLevel');
